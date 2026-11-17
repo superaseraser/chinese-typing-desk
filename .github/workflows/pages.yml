@@ -33,12 +33,12 @@ jobs:
           npm pack @msime/web-engine@0.2.0 --ignore-scripts --pack-destination .engine
           tar -xzf .engine/msime-web-engine-0.2.0.tgz -C .engine
           npm view @msime/web-engine@0.2.0 --json > .engine/package-metadata.json
+      - name: Install build and browser tools
+        run: |
+          npm install --no-save --ignore-scripts @playwright/test@1.56.1 esbuild@0.25.12
+          npx playwright install --with-deps chromium
       - name: Build offline edition
         run: node scripts/build-offline.mjs
-      - name: Install browser test tools
-        run: |
-          npm install --no-save --ignore-scripts @playwright/test@1.56.1
-          npx playwright install --with-deps chromium
       - name: Verify genuinely offline typing
         run: node scripts/verify-offline.mjs
       - name: Package downloadable offline tool

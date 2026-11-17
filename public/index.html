@@ -201,8 +201,8 @@
         if (!globalThis.WebAssembly || !globalThis.Worker || !globalThis.DecompressionStream) throw new Error('Browser features unavailable');
         const { createMsimeEngine, attachInput } = await import(offline ? offline.module : 'https://cdn.jsdelivr.net/npm/@msime/web-engine@0.2.0/index.js');
         if (offline) {
-          workerUrl = URL.createObjectURL(new Blob(['import ' + JSON.stringify(offline.worker) + ';'], {type:'text/javascript'}));
-          customWorker = new Worker(workerUrl, {type:'module'});
+          workerUrl = URL.createObjectURL(new Blob([offline.workerCode], {type:'text/javascript'}));
+          customWorker = new Worker(workerUrl);
         }
         const candidateEngine = await createMsimeEngine({ scheme: 'quanpin', ...(offline ? {assets:offline.assets, worker:customWorker} : {}) });
         attachInput(writing, candidateEngine);
