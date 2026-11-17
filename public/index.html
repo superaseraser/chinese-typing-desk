@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Type Chinese with Pinyin in your browser and copy it into another app.">
+  <title>Chinese Typing Desk</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, "Segoe UI", sans-serif; color: #24372e; background: #f5f5ee; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 930px; margin: 0 auto; padding: 48px 24px 32px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-size: 14px; font-weight: 650; }
+    .mark { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 13px; background: #244f3c; color: white; font-size: 23px; }
+    header { margin: 54px 0 30px; }
+    .eyebrow { color: #57785e; text-transform: uppercase; font-size: 11px; font-weight: 700; letter-spacing: .17em; }
+    h1 { font-size: clamp(32px, 5vw, 48px); letter-spacing: -.04em; line-height: 1.1; margin: 14px 0; font-weight: 650; }
+    .intro { color: #687569; font-size: 17px; line-height: 1.6; margin: 0; }
+    .editor { background: #fff; border: 1px solid #dce2d6; border-radius: 20px; box-shadow: 0 16px 48px #233c2608; }
+    .toolbar { padding: 18px 23px; border-bottom: 1px solid #edf0e8; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
+    .language { font-size: 14px; font-weight: 600; }
+    .language span { color: #879080; font-weight: 400; margin-left: 8px; }
+    #status { font-size: 12px; color: #657159; display: flex; gap: 7px; align-items: center; }
+    #status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #ba9653; flex-shrink: 0; }
+    #status[data-state="ready"]::before { background: #4a9360; }
+    #status[data-state="error"]::before { background: #b75b47; }
+    label { display: block; margin: 23px 25px 0; color: #6b7667; font-size: 12px; font-weight: 600; }
+    textarea { display: block; width: calc(100% - 48px); min-height: 280px; margin: 10px 24px 20px; padding: 6px 0; resize: vertical; border: 0; outline: 0; color: #24372e; background: white; font: 22px/1.85 "Segoe UI", "Microsoft YaHei", sans-serif; }
+    textarea:focus-visible { outline: 2px solid #88a58d; outline-offset: 7px; border-radius: 2px; }
+    textarea::placeholder { color: #a3ab9e; }
+    textarea:disabled { opacity: .7; cursor: wait; }
+    .footer { padding: 17px 23px; border-top: 1px solid #edf0e8; display: flex; gap: 14px; justify-content: space-between; align-items: center; }
+    #count { color: #84907b; font-size: 12px; }
+    button { font: inherit; cursor: pointer; }
+    #copy { background: #244f3c; color: white; border: 0; border-radius: 10px; padding: 12px 22px; font-size: 14px; font-weight: 600; }
+    #copy:hover { background: #173d2b; }
+    #copy:disabled { opacity: .45; cursor: default; }
+    button:focus-visible, a:focus-visible { outline: 3px solid #85ae92; outline-offset: 4px; }
+    .help { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 28px 4px; }
+    .step { font-size: 13px; line-height: 1.6; color: #74816c; }
+    .step strong { display: block; margin-bottom: 5px; color: #384b38; font-weight: 600; }
+    kbd { background: #e9ecdf; border: 1px solid #d9dfcd; border-radius: 4px; padding: 1px 5px; font: 11px "Segoe UI", sans-serif; color: #536346; }
+    .note { color: #84907b; font-size: 12px; line-height: 1.7; margin: 25px 4px; }
+    .note a { color: #57785e; }
+    #error { margin: 0 24px 20px; padding: 14px; background: #fff4e8; border-radius: 9px; color: #74583c; font-size: 13px; line-height: 1.6; }
+    #retry { background: none; border: 0; color: #74583c; text-decoration: underline; padding: 0 0 0 7px; }
+    #feedback { min-height: 22px; margin: 12px 4px 0; font-size: 13px; color: #45694d; }
+    @media (max-width: 560px) { main { padding: 25px 18px; } header { margin-top: 38px; } .help { grid-template-columns: 1fr; gap: 15px; } textarea { min-height: 230px; } .language span { display: none; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand"><span class="mark" aria-hidden="true">?</span> Chinese Typing Desk</div>
+    <header>
+      <div class="eyebrow">A little space for your words</div>
+      <h1>Type Pinyin. Write Chinese.</h1>
+      <p class="intro">Write here, then copy your Chinese text into any app.</p>
+    </header>
+    <section class="editor" aria-label="Chinese text editor">
+      <div class="toolbar">
+        <div class="language">???? <span>Full Pinyin � ??</span></div>
+        <div id="status" role="status" data-state="loading">Loading Chinese input.</div>
+      </div>
+      <label for="writing">Your text / ????</label>
+      <textarea id="writing" disabled placeholder="Try typing nihao  ??" spellcheck="false" autocomplete="off" autocapitalize="off" aria-describedby="instructions"></textarea>
+      <div id="error" hidden>Chinese input could not load. Check your connection; your university network may block the required resources. Ask IT if access is restricted.<button id="retry" type="button">Retry</button></div>
+      <div class="footer"><span id="count">0 characters</span><button id="copy" type="button" disabled>Copy text</button></div>
+    </section>
+    <div id="feedback" role="status" aria-live="polite"></div>
+    <div class="help" id="instructions">
+      <div class="step"><strong>01 &nbsp; Type Pinyin</strong>Enter a word such as <b>nihao</b> using your English keyboard.</div>
+      <div class="step"><strong>02 &nbsp; Choose a word</strong>Use the candidate bar to choose Chinese characters. Press <kbd>Space</kbd> for the first option.</div>
+      <div class="step"><strong>03 &nbsp; Take it with you</strong>Click Copy text, then paste into Word, email, or another app.</div>
+    </div>
+    <p class="note">Powered by <a href="https://msime.app/" target="_blank" rel="noopener noreferrer">????? � MSIME</a>. Chinese input works inside this box. No Windows installation is needed.<br>Input processing runs in your browser. This page does not save your text; copy it before closing. Initial loading may take a moment.</p>
+  </main>
+  <script type="module">
+    const writing = document.querySelector('#writing');
+    const status = document.querySelector('#status');
+    const feedback = document.querySelector('#feedback');
+    const copy = document.querySelector('#copy');
+    let engine;
+    let loading = false;
+    function updateCount() {
+      const length = Array.from(writing.value).length;
+      document.querySelector('#count').textContent = `${length} character${length === 1 ? '' : 's'}`;
+      copy.disabled = length === 0;
+    }
+    writing.addEventListener('input', updateCount);
+    writing.addEventListener('compositionend', updateCount);
+    copy.addEventListener('click', async () => {
+      const text = writing.value;
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        feedback.textContent = 'Copied. Paste your text into another app.';
+      } catch {
+        writing.focus();
+        writing.select();
+        feedback.textContent = 'Text selected. Press Ctrl+C (or ?C on Mac) to copy.';
+      }
+    });
+    async function loadInput() {
+      if (loading || engine) return;
+      loading = true;
+      status.dataset.state = 'loading';
+      status.textContent = 'Loading Chinese input.';
+      document.querySelector('#error').hidden = true;
+      let slowTimer = setTimeout(() => { status.textContent = 'Still loading. first download can take a moment.'; }, 15000);
+      try {
+        if (!globalThis.WebAssembly || !globalThis.Worker || !globalThis.DecompressionStream) throw new Error('Browser features unavailable');
+        const { createMsimeEngine, attachInput } = await import('https://cdn.jsdelivr.net/npm/@msime/web-engine@0.2.0/index.js');
+        const candidateEngine = await createMsimeEngine({ scheme: 'quanpin' });
+        attachInput(writing, candidateEngine);
+        engine = candidateEngine;
+        writing.disabled = false;
+        status.dataset.state = 'ready';
+        status.textContent = 'Chinese input ready';
+        writing.focus();
+      } catch (error) {
+        status.dataset.state = 'error';
+        status.textContent = 'Chinese input unavailable';
+        document.querySelector('#error').hidden = false;
+        console.error('MSIME initialization failed:', error);
+      } finally { clearTimeout(slowTimer); loading = false; }
+    }
+    document.querySelector('#retry').addEventListener('click', loadInput);
+    loadInput();
+  </script>
+</body>
+</html>
+
