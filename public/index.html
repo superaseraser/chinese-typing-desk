@@ -50,7 +50,7 @@
 </head>
 <body>
   <main>
-    <div class="brand"><span class="mark" aria-hidden="true">?</span> Chinese Typing Desk</div>
+    <div class="brand"><span class="mark" aria-hidden="true">文</span> Chinese Typing Desk</div>
     <header>
       <div class="eyebrow">A little space for your words</div>
       <h1>Type Pinyin. Write Chinese.</h1>
@@ -58,11 +58,11 @@
     </header>
     <section class="editor" aria-label="Chinese text editor">
       <div class="toolbar">
-        <div class="language">???? <span>Full Pinyin � ??</span></div>
-        <div id="status" role="status" data-state="loading">Loading Chinese input.</div>
+        <div class="language">简体中文 <span>Full Pinyin · 全拼</span></div>
+        <div id="status" role="status" data-state="loading">Loading Chinese input…</div>
       </div>
-      <label for="writing">Your text / ????</label>
-      <textarea id="writing" disabled placeholder="Try typing nihao  ??" spellcheck="false" autocomplete="off" autocapitalize="off" aria-describedby="instructions"></textarea>
+      <label for="writing">Your text / 输入文字</label>
+      <textarea id="writing" disabled placeholder="Try typing nihao → 你好" spellcheck="false" autocomplete="off" autocapitalize="off" aria-describedby="instructions"></textarea>
       <div id="error" hidden>Chinese input could not load. Check your connection; your university network may block the required resources. Ask IT if access is restricted.<button id="retry" type="button">Retry</button></div>
       <div class="footer"><span id="count">0 characters</span><button id="copy" type="button" disabled>Copy text</button></div>
     </section>
@@ -72,7 +72,7 @@
       <div class="step"><strong>02 &nbsp; Choose a word</strong>Use the candidate bar to choose Chinese characters. Press <kbd>Space</kbd> for the first option.</div>
       <div class="step"><strong>03 &nbsp; Take it with you</strong>Click Copy text, then paste into Word, email, or another app.</div>
     </div>
-    <p class="note">Powered by <a href="https://msime.app/" target="_blank" rel="noopener noreferrer">????? � MSIME</a>. Chinese input works inside this box. No Windows installation is needed.<br>Input processing runs in your browser. This page does not save your text; copy it before closing. Initial loading may take a moment.</p>
+    <p class="note">Powered by <a href="https://msime.app/" target="_blank" rel="noopener noreferrer">水杉输入法 · MSIME</a>. Chinese input works inside this box. No Windows installation is needed.<br>Input processing runs in your browser. This page does not save your text; copy it before closing. Initial loading may take a moment.</p>
   </main>
   <script type="module">
     const writing = document.querySelector('#writing');
@@ -97,16 +97,16 @@
       } catch {
         writing.focus();
         writing.select();
-        feedback.textContent = 'Text selected. Press Ctrl+C (or ?C on Mac) to copy.';
+        feedback.textContent = 'Text selected. Press Ctrl+C (or ⌘C on Mac) to copy.';
       }
     });
     async function loadInput() {
       if (loading || engine) return;
       loading = true;
       status.dataset.state = 'loading';
-      status.textContent = 'Loading Chinese input.';
+      status.textContent = 'Loading Chinese input…';
       document.querySelector('#error').hidden = true;
-      let slowTimer = setTimeout(() => { status.textContent = 'Still loading. first download can take a moment.'; }, 15000);
+      let slowTimer = setTimeout(() => { status.textContent = 'Still loading… first download can take a moment.'; }, 15000);
       try {
         if (!globalThis.WebAssembly || !globalThis.Worker || !globalThis.DecompressionStream) throw new Error('Browser features unavailable');
         const { createMsimeEngine, attachInput } = await import('https://cdn.jsdelivr.net/npm/@msime/web-engine@0.2.0/index.js');
@@ -129,4 +129,3 @@
   </script>
 </body>
 </html>
-

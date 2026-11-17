@@ -2,6 +2,8 @@
 
 A small, static tool for typing Simplified Chinese with Pinyin in a browser. Write in the text box, choose a candidate, and copy the result into Word, email, or another app. No Windows input-method installation is required.
 
+**[Open Chinese Typing Desk](https://superaseraser.github.io/chinese-typing-desk/)**
+
 ## Use
 
 1. Open the published GitHub Pages site, or open `public/index.html` in Chrome or Edge.
@@ -14,7 +16,7 @@ This works inside the page's text box. It does not add a system keyboard.
 
 The repository includes `.github/workflows/pages.yml`, which publishes only `public/` on pushes to `main` or a manual workflow run.
 
-In repository **Settings  Pages  Build and deployment**, select **GitHub Actions**. Then run **Deploy typing tool** from the Actions tab, or push a change to `main`.
+In repository **Settings → Pages → Build and deployment**, select **GitHub Actions**. Then run **Deploy typing tool** from the Actions tab, or push a change to `main`.
 
 GitHub Pages must be available under your account or organization policy. A managed network may also restrict the site or its CDN dependencies; contact IT if access is blocked.
 
@@ -33,5 +35,4 @@ Edit `public/index.html`. There is no build step or package installation. To ser
 
 ## Validation status
 
-The page's JavaScript passed Node's syntax check. Interactive Pinyin conversion and CDN loading have not yet been verified because the authoring environment blocked external connections. Verify `nihao`  `??` and the Copy button in the deployed site before relying on it.
-
+The page's JavaScript passed Node's syntax check. Browser checks of the deployed site confirmed engine initialization, `nihao` → `你好`, character counting, and the Copy button's success feedback. Clipboard contents could not be independently verified by the browser automation interface.
