@@ -1,6 +1,7 @@
 # 中文输入小工具 | Chinese Typing Desk
 
-**在浏览器中输入中文，一键复制到其他应用。无需安装系统输入法。**  
+**在浏览器中输入中文，一键复制到其他应用。无需安装系统输入法。**
+
 **Type Chinese in your browser and copy it into other apps. No system input-method installation required.**
 
 [在线使用 / Open online](https://superaseraser.github.io/chinese-typing-desk/) · [下载离线版 / Download offline ZIP](https://superaseraser.github.io/chinese-typing-desk/downloads/chinese-typing-desk-offline.zip)
