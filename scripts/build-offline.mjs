@@ -56,7 +56,21 @@ for (const file of await readdir(packageRoot)) {
   }
 }
 const metadata = JSON.parse(await readFile('.engine/package-metadata.json', 'utf8'));
-const sourceRef = metadata.gitHead;
+let sourceRef = metadata.gitHead;
+if (!sourceRef && metadata.dist?.attestations?.url) {
+  const attestations = await fetch(metadata.dist.attestations.url).then(r => {
+    if (!r.ok) throw new Error('Cannot read npm provenance: ' + r.status);
+    return r.json();
+  });
+  for (const entry of attestations.attestations ?? []) {
+    const payload = entry.bundle?.dsseEnvelope?.payload;
+    if (!payload) continue;
+    const statement = JSON.parse(Buffer.from(payload, 'base64').toString('utf8'));
+    const dependencies = statement.predicate?.buildDefinition?.resolvedDependencies ?? [];
+    const upstream = dependencies.find(d => d.uri?.startsWith('git+https://github.com/metasequoiaime/msime@'));
+    if (upstream?.digest?.gitCommit) sourceRef = upstream.digest.gitCommit;
+  }
+}
 if (!/^[a-f0-9]{40}$/i.test(sourceRef || '')) throw new Error('Published package has no source revision; cannot package corresponding engine source');
 const response = await fetch('https://codeload.github.com/metasequoiaime/msime/tar.gz/' + sourceRef);
 if (!response.ok) throw new Error('Cannot retrieve matching MSIME source: ' + response.status);
