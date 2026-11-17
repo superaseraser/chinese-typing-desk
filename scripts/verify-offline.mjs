@@ -30,6 +30,7 @@ try {
   await page.locator('#locale').click();
   assert.equal(await page.locator('#copy').textContent(), '复制文字');
   await page.locator('#copy').click();
+  await page.waitForFunction(() => document.querySelector('#feedback').textContent.length > 0);
   const feedback = await page.locator('#feedback').textContent();
   assert.match(feedback, /已复制|文字已选中/);
   assert.deepEqual(external, [], 'Offline typing must not request any HTTP resources');
