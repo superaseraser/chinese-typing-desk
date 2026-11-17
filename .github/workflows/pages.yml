@@ -23,6 +23,34 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v6
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch pinned MSIME package
+        run: |
+          mkdir -p .engine
+          npm pack @msime/web-engine@0.2.0 --ignore-scripts --pack-destination .engine
+          tar -xzf .engine/msime-web-engine-0.2.0.tgz -C .engine
+          npm view @msime/web-engine@0.2.0 --json > .engine/package-metadata.json
+      - name: Build offline edition
+        run: node scripts/build-offline.mjs
+      - name: Install browser test tools
+        run: |
+          npm install --no-save --ignore-scripts @playwright/test@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Verify genuinely offline typing
+        run: node scripts/verify-offline.mjs
+      - name: Package downloadable offline tool
+        run: |
+          mkdir -p public/downloads
+          cd offline-package
+          zip -q -r ../public/downloads/chinese-typing-desk-offline.zip .
+      - name: Upload offline test proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: offline-verification
+          path: offline-verified.png
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload static page

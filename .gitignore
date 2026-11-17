@@ -3,3 +3,8 @@ Thumbs.db
 node_modules/
 .env
 .env.*
+.engine/
+offline-package/
+offline-verified.png
+public/downloads/
+package-lock.json

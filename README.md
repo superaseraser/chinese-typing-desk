@@ -4,6 +4,12 @@ A small, static tool for typing Simplified Chinese with Pinyin in a browser. Wri
 
 **[Open Chinese Typing Desk](https://superaseraser.github.io/chinese-typing-desk/)**
 
+默认中文界面，右上角可以切换 English，切换时保留已输入的文字。
+
+**[下载即用的离线版 / Download offline edition](https://superaseraser.github.io/chinese-typing-desk/downloads/chinese-typing-desk-offline.zip)**
+
+解压 ZIP 后，用较新版本的 Chrome 或 Edge 打开 `Chinese-Typing-Desk-Offline.html`。输入引擎、词库和模型全部内嵌，不需要网络、安装或本地服务器。若自动复制不可用，页面会选中文字并提示按 Ctrl+C。The offline edition embeds its runtime and resources; extract the ZIP and open the HTML file directly.
+
 ## Use
 
 1. Open the published GitHub Pages site, or open `public/index.html` in Chrome or Edge.
@@ -22,7 +28,9 @@ GitHub Pages must be available under your account or organization policy. A mana
 
 ## Development
 
-Edit `public/index.html`. There is no build step or package installation. To serve locally, use any static HTTP server with `public` as its root.
+Edit `public/index.html`. The online page needs no build step. To serve locally, use any static HTTP server with `public` as its root. Deployment additionally fetches the pinned engine package and generates the self-contained offline edition with `scripts/build-offline.mjs`.
+
+The deployment workflow verifies offline `file://` launch, Pinyin conversion, language switching, text preservation, and copy feedback in Chromium with all HTTP requests blocked. It publishes only after these checks pass. Matching engine source and license notices are included in the offline ZIP.
 
 ## Dependencies and privacy
 

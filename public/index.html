@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Type Chinese with Pinyin in your browser and copy it into another app.">
-  <title>Chinese Typing Desk</title>
+  <meta name="description" content="在浏览器中用拼音输入中文，一键复制到其他应用。">
+  <title>中文输入小工具</title>
   <style>
     :root { color-scheme: light; font-family: Inter, "Segoe UI", sans-serif; color: #24372e; background: #f5f5ee; }
     * { box-sizing: border-box; }
@@ -46,85 +46,182 @@
     #retry { background: none; border: 0; color: #74583c; text-decoration: underline; padding: 0 0 0 7px; }
     #feedback { min-height: 22px; margin: 12px 4px 0; font-size: 13px; color: #45694d; }
     @media (max-width: 560px) { main { padding: 25px 18px; } header { margin-top: 38px; } .help { grid-template-columns: 1fr; gap: 15px; } textarea { min-height: 230px; } .language span { display: none; } }
-  </style>
+
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:16px; }
+    #locale { border:1px solid #cbd6c5; background:transparent; color:#365a40; padding:9px 13px; border-radius:9px; font-size:13px; }
+    .download { display:inline-block; margin-top:8px; font-weight:600; }
+</style>
 </head>
 <body>
   <main>
-    <div class="brand"><span class="mark" aria-hidden="true">文</span> Chinese Typing Desk</div>
+    <div class="topbar">
+      <div class="brand"><span class="mark" aria-hidden="true">文</span> <span data-i18n="brand">中文输入小工具</span></div>
+      <button id="locale" type="button" aria-label="Switch interface to English" lang="en">English</button>
+    </div>
     <header>
-      <div class="eyebrow">A little space for your words</div>
-      <h1>Type Pinyin. Write Chinese.</h1>
-      <p class="intro">Write here, then copy your Chinese text into any app.</p>
+      <div class="eyebrow" data-i18n="eyebrow">随手输入，轻松表达</div>
+      <h1 data-i18n="heading">输入拼音，写出中文。</h1>
+      <p class="intro" data-i18n="intro">在这里输入中文，再一键复制到其他应用。</p>
     </header>
-    <section class="editor" aria-label="Chinese text editor">
+    <section class="editor" aria-label="中文编辑区">
       <div class="toolbar">
-        <div class="language">简体中文 <span>Full Pinyin · 全拼</span></div>
-        <div id="status" role="status" data-state="loading">Loading Chinese input…</div>
+        <div class="language"><span data-i18n="scheme">简体中文 · 全拼</span></div>
+        <div id="status" role="status" data-state="loading">正在加载中文输入引擎…</div>
       </div>
-      <label for="writing">Your text / 输入文字</label>
-      <textarea id="writing" disabled placeholder="Try typing nihao → 你好" spellcheck="false" autocomplete="off" autocapitalize="off" aria-describedby="instructions"></textarea>
-      <div id="error" hidden>Chinese input could not load. Check your connection; your university network may block the required resources. Ask IT if access is restricted.<button id="retry" type="button">Retry</button></div>
-      <div class="footer"><span id="count">0 characters</span><button id="copy" type="button" disabled>Copy text</button></div>
+      <label for="writing" data-i18n="label">输入文字</label>
+      <textarea id="writing" disabled placeholder="试着输入 nihao → 你好" spellcheck="false" autocomplete="off" autocapitalize="off" aria-describedby="instructions"></textarea>
+      <div id="error" hidden><span data-i18n="error">中文输入加载失败。请检查网络；若单位或学校限制访问，请联系 IT。也可以使用已下载的离线版。</span> <button id="retry" type="button" data-i18n="retry">重试</button></div>
+      <div class="footer"><span id="count">0 字</span><button id="copy" type="button" disabled data-i18n="copy">复制文字</button></div>
     </section>
     <div id="feedback" role="status" aria-live="polite"></div>
     <div class="help" id="instructions">
-      <div class="step"><strong>01 &nbsp; Type Pinyin</strong>Enter a word such as <b>nihao</b> using your English keyboard.</div>
-      <div class="step"><strong>02 &nbsp; Choose a word</strong>Use the candidate bar to choose Chinese characters. Press <kbd>Space</kbd> for the first option.</div>
-      <div class="step"><strong>03 &nbsp; Take it with you</strong>Click Copy text, then paste into Word, email, or another app.</div>
+      <div class="step"><strong data-i18n="step1Title">01 · 输入拼音</strong><span data-i18n="step1">使用英文键盘输入拼音，例如 nihao。</span></div>
+      <div class="step"><strong data-i18n="step2Title">02 · 选择汉字</strong><span data-i18n="step2">在候选栏中选择汉字；按空格键选择第一个候选。</span></div>
+      <div class="step"><strong data-i18n="step3Title">03 · 复制使用</strong><span data-i18n="step3">点击“复制文字”，再粘贴到 Word、邮件或其他应用。</span></div>
     </div>
-    <p class="note">Powered by <a href="https://msime.app/" target="_blank" rel="noopener noreferrer">水杉输入法 · MSIME</a>. Chinese input works inside this box. No Windows installation is needed.<br>Input processing runs in your browser. This page does not save your text; copy it before closing. Initial loading may take a moment.</p>
+    <p class="note">
+      <span data-i18n="powered">输入引擎：</span><a href="https://msime.app/" target="_blank" rel="noopener noreferrer">水杉输入法 · MSIME</a>。
+      <span data-i18n="scope">仅在本页面的输入框内生效，无需安装 Windows 输入法。</span><br>
+      <span data-i18n="privacy">文字在浏览器中处理。本页不会保存输入内容，关闭前请先复制。首次加载可能需要一点时间。</span><br>
+      <a class="download" href="./downloads/chinese-typing-desk-offline.zip" download data-i18n="download">下载离线版（解压后双击 HTML 文件）</a>
+    </p>
   </main>
   <script type="module">
     const writing = document.querySelector('#writing');
     const status = document.querySelector('#status');
     const feedback = document.querySelector('#feedback');
     const copy = document.querySelector('#copy');
+    const translations = {
+      zh: {
+        title: '中文输入小工具', description: '在浏览器中用拼音输入中文，一键复制到其他应用。',
+        brand: '中文输入小工具', eyebrow: '随手输入，轻松表达', heading: '输入拼音，写出中文。',
+        intro: '在这里输入中文，再一键复制到其他应用。', scheme: '简体中文 · 全拼',
+        label: '输入文字', editor: '中文编辑区', placeholder: '试着输入 nihao → 你好',
+        error: '中文输入加载失败。请检查网络；若单位或学校限制访问，请联系 IT。也可以使用已下载的离线版。',
+        offlineError: '离线输入引擎启动失败。请使用较新版本的 Chrome 或 Edge；若浏览器受到单位或学校限制，请联系 IT。',
+        retry: '重试', copy: '复制文字',
+        step1Title: '01 · 输入拼音', step1: '使用英文键盘输入拼音，例如 nihao。',
+        step2Title: '02 · 选择汉字', step2: '在候选栏中选择汉字；按空格键选择第一个候选。',
+        step3Title: '03 · 复制使用', step3: '点击“复制文字”，再粘贴到 Word、邮件或其他应用。',
+        powered: '输入引擎：', scope: '仅在本页面的输入框内生效，无需安装 Windows 输入法。',
+        privacy: '文字在浏览器中处理。本页不会保存输入内容，关闭前请先复制。首次加载可能需要一点时间。',
+        offlinePrivacy: '当前为离线版：引擎与词库均已包含，无需联网。文字不会保存，关闭前请先复制。',
+        download: '下载离线版（解压后双击 HTML 文件）',
+        loading: '正在加载中文输入引擎…', slow: '仍在加载中，首次启动可能需要一点时间…',
+        ready: '中文输入已就绪', unavailable: '中文输入暂不可用',
+        copied: '已复制，可以粘贴到其他应用。',
+        manual: '文字已选中，请按 Ctrl+C（Mac 使用 Command+C）复制。'
+      },
+      en: {
+        title: 'Chinese Typing Desk', description: 'Type Chinese with Pinyin in your browser and copy it into another app.',
+        brand: 'Chinese Typing Desk', eyebrow: 'A little space for your words', heading: 'Type Pinyin. Write Chinese.',
+        intro: 'Write here, then copy your Chinese text into any app.', scheme: 'Simplified Chinese · Full Pinyin',
+        label: 'Your text', editor: 'Chinese text editor', placeholder: 'Try typing nihao → 你好',
+        error: 'Chinese input could not load. Check your connection; ask IT if your network restricts access. You can also use the downloaded offline edition.',
+        offlineError: 'The offline engine could not start. Use a recent version of Chrome or Edge; contact IT if your browser is restricted.',
+        retry: 'Retry', copy: 'Copy text',
+        step1Title: '01 · Type Pinyin', step1: 'Use your English keyboard to type Pinyin, such as nihao.',
+        step2Title: '02 · Choose a word', step2: 'Choose Chinese characters in the candidate bar. Press Space for the first option.',
+        step3Title: '03 · Take it with you', step3: 'Click Copy text, then paste into Word, email, or another app.',
+        powered: 'Powered by ', scope: 'Chinese input works inside this box. No Windows installation is needed.',
+        privacy: 'Input processing runs in your browser. This page does not save your text; copy it before closing. Initial loading may take a moment.',
+        offlinePrivacy: 'Offline edition: the engine and dictionary are included. No connection is required. Text is not saved; copy it before closing.',
+        download: 'Download offline edition (extract, then open the HTML file)',
+        loading: 'Loading Chinese input…', slow: 'Still loading… first startup can take a moment.',
+        ready: 'Chinese input ready', unavailable: 'Chinese input unavailable',
+        copied: 'Copied. Paste your text into another app.',
+        manual: 'Text selected. Press Ctrl+C (or Command+C on Mac) to copy.'
+      }
+    };
+    // The offline build replaces this marker with embedded engine resources.
+    const offline = null; /* OFFLINE_PACKAGE */
+    let locale = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'zh';
+    let statusKey = 'loading';
+    let feedbackKey = '';
     let engine;
     let loading = false;
     function updateCount() {
       const length = Array.from(writing.value).length;
-      document.querySelector('#count').textContent = `${length} character${length === 1 ? '' : 's'}`;
+      document.querySelector('#count').textContent = locale === 'zh' ? length + ' 字' : length + ' character' + (length === 1 ? '' : 's');
       copy.disabled = length === 0;
     }
-    writing.addEventListener('input', updateCount);
+    function renderLocale() {
+      const text = translations[locale];
+      document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en';
+      document.title = text.title;
+      document.querySelector('meta[name="description"]').content = text.description;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        el.textContent = text[offline && key === 'privacy' ? 'offlinePrivacy' : offline && key === 'error' ? 'offlineError' : key];
+      });
+      writing.placeholder = text.placeholder;
+      document.querySelector('.editor').setAttribute('aria-label', text.editor);
+      const toggle = document.querySelector('#locale');
+      toggle.textContent = locale === 'zh' ? 'English' : '中文';
+      toggle.lang = locale === 'zh' ? 'en' : 'zh-CN';
+      toggle.setAttribute('aria-label', locale === 'zh' ? 'Switch interface to English' : '切换为中文界面');
+      status.textContent = text[statusKey];
+      feedback.textContent = feedbackKey ? text[feedbackKey] : '';
+      document.querySelector('.download').hidden = Boolean(offline);
+      updateCount();
+    }
+    function setStatus(key, state) {
+      statusKey = key;
+      status.dataset.state = state;
+      status.textContent = translations[locale][key];
+    }
+    document.querySelector('#locale').addEventListener('click', () => {
+      locale = locale === 'zh' ? 'en' : 'zh';
+      renderLocale();
+    });
+    writing.addEventListener('input', () => { feedbackKey = ''; feedback.textContent = ''; updateCount(); });
     writing.addEventListener('compositionend', updateCount);
     copy.addEventListener('click', async () => {
-      const text = writing.value;
-      if (!text) return;
+      if (!writing.value) return;
       try {
-        await navigator.clipboard.writeText(text);
-        feedback.textContent = 'Copied. Paste your text into another app.';
+        await navigator.clipboard.writeText(writing.value);
+        feedbackKey = 'copied';
       } catch {
         writing.focus();
         writing.select();
-        feedback.textContent = 'Text selected. Press Ctrl+C (or ⌘C on Mac) to copy.';
+        feedbackKey = 'manual';
       }
+      feedback.textContent = translations[locale][feedbackKey];
     });
     async function loadInput() {
       if (loading || engine) return;
       loading = true;
-      status.dataset.state = 'loading';
-      status.textContent = 'Loading Chinese input…';
+      setStatus('loading', 'loading');
       document.querySelector('#error').hidden = true;
-      let slowTimer = setTimeout(() => { status.textContent = 'Still loading… first download can take a moment.'; }, 15000);
+      const slowTimer = setTimeout(() => { setStatus('slow', 'loading'); }, 15000);
+      let customWorker;
+      let workerUrl;
       try {
         if (!globalThis.WebAssembly || !globalThis.Worker || !globalThis.DecompressionStream) throw new Error('Browser features unavailable');
-        const { createMsimeEngine, attachInput } = await import('https://cdn.jsdelivr.net/npm/@msime/web-engine@0.2.0/index.js');
-        const candidateEngine = await createMsimeEngine({ scheme: 'quanpin' });
+        const { createMsimeEngine, attachInput } = await import(offline ? offline.module : 'https://cdn.jsdelivr.net/npm/@msime/web-engine@0.2.0/index.js');
+        if (offline) {
+          workerUrl = URL.createObjectURL(new Blob(['import ' + JSON.stringify(offline.worker) + ';'], {type:'text/javascript'}));
+          customWorker = new Worker(workerUrl, {type:'module'});
+        }
+        const candidateEngine = await createMsimeEngine({ scheme: 'quanpin', ...(offline ? {assets:offline.assets, worker:customWorker} : {}) });
         attachInput(writing, candidateEngine);
         engine = candidateEngine;
         writing.disabled = false;
-        status.dataset.state = 'ready';
-        status.textContent = 'Chinese input ready';
+        setStatus('ready', 'ready');
         writing.focus();
       } catch (error) {
-        status.dataset.state = 'error';
-        status.textContent = 'Chinese input unavailable';
+        customWorker?.terminate();
+        setStatus('unavailable', 'error');
         document.querySelector('#error').hidden = false;
         console.error('MSIME initialization failed:', error);
-      } finally { clearTimeout(slowTimer); loading = false; }
+      } finally {
+        clearTimeout(slowTimer);
+        if (workerUrl) URL.revokeObjectURL(workerUrl);
+        loading = false;
+      }
     }
     document.querySelector('#retry').addEventListener('click', loadInput);
+    renderLocale();
     loadInput();
   </script>
 </body>
