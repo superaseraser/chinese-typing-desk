@@ -13,6 +13,7 @@ try {
   await page.goto(pathToFileURL(path.resolve('offline-package/Chinese-Typing-Desk-Offline.html')).href);
   await page.locator('#status[data-state="ready"]').waitFor({timeout:120000});
   assert.equal(await page.locator('html').getAttribute('lang'), 'zh-CN');
+  assert.equal(await page.locator('.download').isVisible(), false);
   await page.locator('#writing').pressSequentially('nihao', {delay:100});
   await page.getByText('你好', {exact:false}).last().waitFor();
   await page.locator('#writing').press('Space');
